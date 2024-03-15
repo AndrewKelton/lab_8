@@ -62,7 +62,7 @@ void mergeSort(int pData[], int l, int r)
         for (i = l, k = 0; i <= r; i++, k++)
             pData[i] = tmp[k];
 		
-		DeAlloc(tmp);
+	DeAlloc(tmp);
     }
 }
 
