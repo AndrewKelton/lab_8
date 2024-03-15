@@ -31,6 +31,39 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	if (l < r) {
+		int m = l + (r-l) / 2;
+
+		mergeSort(pData, l, m);
+
+		mergeSort(pData, m + 1, r);
+
+		int * tmp;
+		tmp = (int*)Alloc((r-l+1) * sizeof(int));
+		//int tmp[r-l+1];
+		int i = l, j = m + 1, k = 0;
+
+		while (i <= m && j <= r) {
+            if (pData[i] <= pData[j])
+                tmp[k++] = pData[i++];
+            else
+                tmp[k++] = pData[j++];
+        }
+
+        // Copy the remaining elements of left half
+        while (i <= m)
+            tmp[k++] = pData[i++];
+
+        // Copy the remaining elements of right half
+        while (j <= r)
+            tmp[k++] = pData[j++];
+
+        // Copy the merged elements back to original array
+        for (i = l, k = 0; i <= r; i++, k++)
+            pData[i] = tmp[k];
+		
+		DeAlloc(tmp);
+    }
 }
 
 // parses input file to an integer array
@@ -69,17 +102,24 @@ void printArray(int pData[], int dataSz)
 {
 	int i, sz = dataSz - 100;
 	printf("\tData:\n\t");
-	for (i=0;i<100;++i)
-	{
-		printf("%d ",pData[i]);
-	}
-	printf("\n\t");
+	if (dataSz > 100) {
+		for (i=0;i<100;++i)
+		{
+			printf("%d ",pData[i]);
+		}
+		printf("\n\t");
 	
-	for (i=sz;i<dataSz;++i)
-	{
-		printf("%d ",pData[i]);
+		for (i=sz;i<dataSz;++i)
+		{
+			printf("%d ",pData[i]);
+		}
+		printf("\n\n");
+	} else {
+		for (i=0; i<dataSz;i++) {
+			printf("%d ", pData[i]);
+		}
+		printf("\n\n");
 	}
-	printf("\n\n");
 }
 
 int main(void)
